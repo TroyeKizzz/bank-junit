@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -108,6 +109,12 @@ public class ExchangeTest {
 
   @BeforeEach
   public void setUp() {
+    // Reset the singleton instance
+    Exchange.instance = null;
+  }
+
+  @AfterAll
+  public static void tearDown() {
     // Reset the singleton instance
     Exchange.instance = null;
   }
