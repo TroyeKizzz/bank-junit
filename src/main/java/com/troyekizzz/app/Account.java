@@ -92,7 +92,7 @@ public class Account {
       throw new IllegalStateException("The account is closed.");
     }
     try {
-      this.balance += Exchange.convert(currency, this.currency, amount);
+      this.balance += Exchange.getInstance().convert(currency, this.currency, amount);
     } catch (IllegalArgumentException e) {
       throw e;
     }
@@ -118,7 +118,7 @@ public class Account {
       throw new IllegalArgumentException("The amount is greater than the balance.");
     }
     try {
-      this.balance -= Exchange.convert(currency, this.currency, amount);
+      this.balance -= Exchange.getInstance().convert(currency, this.currency, amount);
     } catch (IllegalArgumentException e) {
       throw e;
     }

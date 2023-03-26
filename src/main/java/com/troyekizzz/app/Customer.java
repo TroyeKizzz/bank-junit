@@ -69,7 +69,7 @@ public class Customer {
   public float getTotalBalance(Currency currency) {
     float totalBalance = 0;
     for (Account account : bankAccounts) {
-      totalBalance += Exchange.convert(account.getCurrency(), currency, account.getBalance());
+      totalBalance += Exchange.getInstance().convert(account.getCurrency(), currency, account.getBalance());
     }
     return totalBalance;
   }
