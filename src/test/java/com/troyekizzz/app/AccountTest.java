@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DisplayName;
@@ -46,6 +48,30 @@ public class AccountTest {
       Arguments.of(1.0f, Currency.GBP, 998.75f),
       Arguments.of(100.0f, Currency.GBP, 875.0f)
     );
+  }
+
+  static Stream<Arguments> getTransferValues() {
+    List<Arguments> values = new ArrayList<>();
+
+    Account account1 = new Account(new Customer(), Currency.EUR);
+    Account account2 = new Account(new Customer(), Currency.EUR);
+    account1.deposit(1000.0f, Currency.EUR);
+    account2.deposit(1000.0f, Currency.EUR);
+    values.add(Arguments.of(account1, account2, 100.0f, 900.0f, 1100.0f));
+
+    account1 = new Account(new Customer(), Currency.USD);
+    account2 = new Account(new Customer(), Currency.EUR);
+    account1.deposit(1000.0f, Currency.USD);
+    account2.deposit(1000.0f, Currency.EUR);
+    values.add(Arguments.of(account1, account2, 100.0f, 900.0f, 1090.0f));
+
+    account1 = new Account(new Customer(), Currency.GBP);
+    account2 = new Account(new Customer(), Currency.EUR);
+    account1.deposit(1000.0f, Currency.GBP);
+    account2.deposit(1000.0f, Currency.EUR);
+    values.add(Arguments.of(account1, account2, 100.0f, 900.0f, 1125.0f));
+
+    return values.stream();
   }
 
   @ParameterizedTest(name = "Test account constructor with {0} currency")
@@ -141,5 +167,32 @@ public class AccountTest {
       this.account.addInterest();
     });
     assertEquals("The account is closed.", exception.getMessage());
+  }
+
+  @ParameterizedTest(name = "Test transfer method with {2}")
+  @MethodSource("getTransferValues")
+  public void testTransfer(Account from, Account to, float amount, float fromResult, float toResult) {
+    Account.transfer(from, to, amount);
+    assertAll("Test transfer method", 
+    () -> assertEquals(fromResult, from.getBalance()),
+    () -> assertEquals(toResult, to.getBalance())
+    );
+  }
+
+  @Test
+  @DisplayName("Test transfer method with too much amount")
+  public void testTransferTooMuch() {
+    Account account1 = new Account(new Customer(), Currency.EUR);
+    Account account2 = new Account(new Customer(), Currency.EUR);
+    account1.deposit(1000.0f, Currency.EUR);
+    account2.deposit(1000.0f, Currency.EUR);
+    Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
+      Account.transfer(account1, account2, 2000.0f);
+    });
+    assertAll("Test transfer too much amount", 
+    () -> assertEquals("The amount is greater than the balance.", exception.getMessage()),
+    () -> assertEquals(1000.0f, account1.getBalance()),
+    () -> assertEquals(1000.0f, account2.getBalance())
+    );
   }
 }
