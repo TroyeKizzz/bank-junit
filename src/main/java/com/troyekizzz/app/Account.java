@@ -37,6 +37,11 @@ public class Account {
   private Customer owner;
 
   /**
+   * The account number.
+   */
+  private String number;
+
+  /**
    * Creates a new account.
    * 
    * The account is open by default, has zero balance,
@@ -51,6 +56,8 @@ public class Account {
     this.balance = 0;
     this.isOpen = true;
     this.interestRate = 0;
+    this.number = "FI" + (int) (Math.random() * 10000000) + (int) (Math.random() * 10000000);
+    owner.getBankAccounts().add(this);
   }
 
   /**
@@ -66,6 +73,7 @@ public class Account {
       throw new IllegalStateException("The account is already closed.");
     }
     this.isOpen = false;
+    this.owner.getBankAccounts().remove(this);
   }
 
   /**
@@ -157,6 +165,14 @@ public class Account {
       throw new IllegalStateException("The account is closed.");
     }
     this.balance += this.getBalance() * this.getInterestRate();
+  }
+
+  /**
+   * Returns a string representation of the account.
+   */
+  public String toString() {
+    return "Account " + this.getNumber() + " of " + this.getOwner().getFirstName() + " " + this.getOwner().getLastName()
+        + " has a balance of " + this.getBalance() + " " + this.getCurrency() + ".";
   }
 
 }

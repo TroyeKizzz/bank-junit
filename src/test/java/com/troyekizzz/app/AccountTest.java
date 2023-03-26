@@ -20,7 +20,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import com.troyekizzz.app.utils.Currency;
 
 public class AccountTest {
-  private Account account = new Account(new Customer(), Currency.EUR);
+  private static Customer customer = new Customer("John", "Doe", "john.doe@gmail.com", "+1234567890");
+  private Account account = new Account(AccountTest.customer, Currency.EUR);
 
   static Stream<Arguments> getDepositValues() {
     return Stream.of(
@@ -53,20 +54,20 @@ public class AccountTest {
   static Stream<Arguments> getTransferValues() {
     List<Arguments> values = new ArrayList<>();
 
-    Account account1 = new Account(new Customer(), Currency.EUR);
-    Account account2 = new Account(new Customer(), Currency.EUR);
+    Account account1 = new Account(customer, Currency.EUR);
+    Account account2 = new Account(customer, Currency.EUR);
     account1.deposit(1000.0f, Currency.EUR);
     account2.deposit(1000.0f, Currency.EUR);
     values.add(Arguments.of(account1, account2, 100.0f, 900.0f, 1100.0f));
 
-    account1 = new Account(new Customer(), Currency.USD);
-    account2 = new Account(new Customer(), Currency.EUR);
+    account1 = new Account(customer, Currency.USD);
+    account2 = new Account(customer, Currency.EUR);
     account1.deposit(1000.0f, Currency.USD);
     account2.deposit(1000.0f, Currency.EUR);
     values.add(Arguments.of(account1, account2, 100.0f, 900.0f, 1090.0f));
 
-    account1 = new Account(new Customer(), Currency.GBP);
-    account2 = new Account(new Customer(), Currency.EUR);
+    account1 = new Account(customer, Currency.GBP);
+    account2 = new Account(customer, Currency.EUR);
     account1.deposit(1000.0f, Currency.GBP);
     account2.deposit(1000.0f, Currency.EUR);
     values.add(Arguments.of(account1, account2, 100.0f, 900.0f, 1125.0f));
@@ -77,7 +78,6 @@ public class AccountTest {
   @ParameterizedTest(name = "Test account constructor with {0} currency")
   @EnumSource(Currency.class)
   public void testConstructor(Currency currency) {
-    Customer customer = new Customer();
     Account account = new Account(customer, currency);
     assertAll("Account constructor tests", 
     () -> assertTrue(account.isOpen()), 
@@ -182,8 +182,8 @@ public class AccountTest {
   @Test
   @DisplayName("Test transfer method with too much amount")
   public void testTransferTooMuch() {
-    Account account1 = new Account(new Customer(), Currency.EUR);
-    Account account2 = new Account(new Customer(), Currency.EUR);
+    Account account1 = new Account(customer, Currency.EUR);
+    Account account2 = new Account(customer, Currency.EUR);
     account1.deposit(1000.0f, Currency.EUR);
     account2.deposit(1000.0f, Currency.EUR);
     Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
