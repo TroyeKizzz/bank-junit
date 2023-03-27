@@ -133,8 +133,10 @@ public class Account {
    * @param from    The account to transfer money from.
    * @param to      The account to transfer money to.
    * @param amount  The amount to transfer.
+   * 
+   * @return A transaction object that represents the transfer.
    */
-  static public void transfer(Account from, Account to, float amount) throws IllegalArgumentException, IllegalStateException {
+  static public Transaction transfer(Account from, Account to, float amount) throws IllegalArgumentException, IllegalStateException {
     // Save the balances of the accounts in case of an exception.
     float fromBalance = from.getBalance();
     float toBalance = to.getBalance();
@@ -142,6 +144,7 @@ public class Account {
     try {
       from.withdraw(amount, from.getCurrency());
       to.deposit(amount, from.getCurrency());
+      return new Transaction(from, to, amount, from.getCurrency(), "Money transfer from " + from.getNumber() + " to " + to.getNumber() + ", in total " + amount + " " + from.getCurrency() + ".");
     } catch (IllegalArgumentException e) {
       // Restore the balances of the accounts.
       from.setBalance(fromBalance);
@@ -169,6 +172,8 @@ public class Account {
 
   /**
    * Returns a string representation of the account.
+   * 
+   * @return A string representation of the account.
    */
   public String toString() {
     return "Account " + this.getNumber() + " of " + this.getOwner().getFirstName() + " " + this.getOwner().getLastName()

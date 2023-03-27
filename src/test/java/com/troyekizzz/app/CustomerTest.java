@@ -76,7 +76,7 @@ public class CustomerTest {
     account2.deposit(5000, Currency.USD);
     account3 = new Account(customer, Currency.GBP);
     account3.deposit(3000, Currency.GBP);
-    // 1244 EUR
+    // 12440 EUR
     values.add(Arguments.of(customer, BenefitLevel.PLATINUM));
 
     customer = new Customer("John", "Smith", "john.smith@gmail.com", "+6789054321");
