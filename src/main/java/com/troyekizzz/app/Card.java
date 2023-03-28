@@ -1,6 +1,7 @@
 package com.troyekizzz.app;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -70,11 +71,13 @@ public class Card {
    * @param account      The account that the card is linked to.
    * @param pin          The card pin.
    */
-  public Card(CardType type, Date expirationDate, Account account, String pin) {
+  public Card(CardType type, Account account, String pin) {
     this.type = type;
     this.number = String.valueOf((int) (Math.random() * 100000000)) + String.valueOf((int) (Math.random() * 100000000));
     this.cvv = (int) (Math.random() * 1000);
-    this.expirationDate = expirationDate;
+    Calendar calendar = Calendar.getInstance();
+    calendar.add(Calendar.YEAR, 4);
+    this.expirationDate = calendar.getTime();
     this.owner = account.getOwner();
     this.account = account;
     this.pin = pin;

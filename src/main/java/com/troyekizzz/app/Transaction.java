@@ -66,6 +66,18 @@ public class Transaction {
     this.description = description;
   }
 
+  public Transaction(Card card, float amount, Currency currency, String description) {
+    if (amount <= 0 || currency == null) {
+      throw new IllegalArgumentException("Invalid transaction");
+    }
+    this.from = card.getAccount();
+    this.to = null;
+    this.amount = amount;
+    this.currency = currency;
+    this.date = new Date();
+    this.description = description;
+  }
+
   /**
    * Calculates the fee of the transaction based on the sender's benefit level.
    * 

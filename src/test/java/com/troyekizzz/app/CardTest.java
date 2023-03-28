@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.params.ParameterizedTest;
@@ -27,49 +26,49 @@ public class CardTest {
 
   static Stream<Arguments> getValidatePinValues() {
     return Stream.of(
-      Arguments.of(new Card(CardType.DEBIT, new Date(), getAccounts().get(0), "1212"), "1212", true),
-      Arguments.of(new Card(CardType.CREDIT, new Date(), getAccounts().get(3), "1234"), "1234", true),
-      Arguments.of(new Card(CardType.DEBIT, new Date(), getAccounts().get(6), "1331"), "3113", false),
-      Arguments.of(new Card(CardType.CREDIT, new Date(), getAccounts().get(7), "0000"), "", false),
-      Arguments.of(new Card(CardType.DEBIT, new Date(), getAccounts().get(8), "1111"), null, false)
+      Arguments.of(new Card(CardType.DEBIT, getAccounts().get(0), "1212"), "1212", true),
+      Arguments.of(new Card(CardType.CREDIT, getAccounts().get(3), "1234"), "1234", true),
+      Arguments.of(new Card(CardType.DEBIT, getAccounts().get(6), "1331"), "3113", false),
+      Arguments.of(new Card(CardType.CREDIT, getAccounts().get(7), "0000"), "", false),
+      Arguments.of(new Card(CardType.DEBIT, getAccounts().get(8), "1111"), null, false)
     );
   }
 
   static Stream<Arguments> getBenefitLevelValues() {
     return Stream.of(
-      Arguments.of(new Card(CardType.DEBIT, new Date(), getAccounts().get(0), "1212"), BenefitLevel.SILVER),
-      Arguments.of(new Card(CardType.CREDIT, new Date(), getAccounts().get(3), "1234"), BenefitLevel.GOLD),
-      Arguments.of(new Card(CardType.DEBIT, new Date(), getAccounts().get(6), "1331"), BenefitLevel.PLATINUM),
-      Arguments.of(new Card(CardType.CREDIT, new Date(), getAccounts().get(7), "0000"), BenefitLevel.PLATINUM),
-      Arguments.of(new Card(CardType.DEBIT, new Date(), getAccounts().get(1), "1111"), BenefitLevel.SILVER)
+      Arguments.of(new Card(CardType.DEBIT, getAccounts().get(0), "1212"), BenefitLevel.SILVER),
+      Arguments.of(new Card(CardType.CREDIT, getAccounts().get(3), "1234"), BenefitLevel.GOLD),
+      Arguments.of(new Card(CardType.DEBIT, getAccounts().get(6), "1331"), BenefitLevel.PLATINUM),
+      Arguments.of(new Card(CardType.CREDIT, getAccounts().get(7), "0000"), BenefitLevel.PLATINUM),
+      Arguments.of(new Card(CardType.DEBIT, getAccounts().get(1), "1111"), BenefitLevel.SILVER)
     );
   }
 
   static Stream<Arguments> getProcessPurchaseValues() {
     return Stream.of(
-      Arguments.of(new Card(CardType.DEBIT, new Date(), getAccounts().get(0), "1212"), 100.0f, Currency.EUR, "1212", 700.0f, true),
-      Arguments.of(new Card(CardType.CREDIT, new Date(), getAccounts().get(4), "1234"), 100.0f, Currency.GBP, "1212", 2000.0f, false),
-      Arguments.of(new Card(CardType.DEBIT, new Date(), getAccounts().get(6), "1331"), 0.0f, Currency.GBP, "1331", 3000.0f, false),
-      Arguments.of(new Card(CardType.CREDIT, new Date(), getAccounts().get(7), "0000"), 0.0f, Currency.EUR, "1212", 5000.0f, false),
-      Arguments.of(new Card(CardType.DEBIT, new Date(), getAccounts().get(1), "1212"), 100.0f, Currency.USD, "1212", 0.0f, false),
-      Arguments.of(new Card(CardType.DEBIT, new Date(), getAccounts().get(5), "1234"), 100.0f, Currency.USD, "1234", 2928.0f, true)
+      Arguments.of(new Card(CardType.DEBIT, getAccounts().get(0), "1212"), 100.0f, Currency.EUR, "1212", 700.0f, true),
+      Arguments.of(new Card(CardType.CREDIT, getAccounts().get(4), "1234"), 100.0f, Currency.GBP, "1212", 2000.0f, false),
+      Arguments.of(new Card(CardType.DEBIT, getAccounts().get(6), "1331"), 0.0f, Currency.GBP, "1331", 3000.0f, false),
+      Arguments.of(new Card(CardType.CREDIT, getAccounts().get(7), "0000"), 0.0f, Currency.EUR, "1212", 5000.0f, false),
+      Arguments.of(new Card(CardType.DEBIT, getAccounts().get(1), "1212"), 100.0f, Currency.USD, "1212", 0.0f, false),
+      Arguments.of(new Card(CardType.DEBIT, getAccounts().get(5), "1234"), 100.0f, Currency.USD, "1234", 2928.0f, true)
     );
   }
 
   static Stream<Arguments> getLimitValues() {
     return Stream.of(
-      Arguments.of(new Card(CardType.DEBIT, new Date(), getAccounts().get(0), "1212"), 100.0f, Currency.EUR, 200.0f, "1212", 700.0f, true),
-      Arguments.of(new Card(CardType.DEBIT, new Date(), getAccounts().get(0), "1212"), 100.0f, Currency.EUR, 50.0f, "1212", 800.0f, false),
-      Arguments.of(new Card(CardType.CREDIT, new Date(), getAccounts().get(4), "1234"), 100.0f, Currency.GBP, 1000.0f, "1212", 2000.0f, false),
-      Arguments.of(new Card(CardType.DEBIT, new Date(), getAccounts().get(6), "1331"), 150.0f, Currency.GBP, 500.0f, "1331", 2812.5f, true),
-      Arguments.of(new Card(CardType.DEBIT, new Date(), getAccounts().get(6), "1331"), 150.0f, Currency.GBP, 100.0f, "1331", 3000.0f, false),
-      Arguments.of(new Card(CardType.CREDIT, new Date(), getAccounts().get(7), "0000"), 0.0f, Currency.EUR, 1000.0f, "1212", 5000.0f, false),
-      Arguments.of(new Card(CardType.DEBIT, new Date(), getAccounts().get(1), "1212"), 100.0f, Currency.USD, 500.0f, "1212", 0.0f, false),
-      Arguments.of(new Card(CardType.DEBIT, new Date(), getAccounts().get(5), "1234"), 100.0f, Currency.USD, 400.0f, "1234", 2928.0f, true),
-      Arguments.of(new Card(CardType.DEBIT, new Date(), getAccounts().get(5), "1234"), 100.0f, Currency.USD, 50.0f, "1234", 3000.0f, false),
-      Arguments.of(new Card(CardType.CREDIT, new Date(), getAccounts().get(0), "1212"), 100.0f, Currency.EUR, 0.0f, "1212", 700.0f, true),
-      Arguments.of(new Card(CardType.DEBIT, new Date(), getAccounts().get(6), "1331"), 150.0f, Currency.GBP, 0.0f, "1331", 2812.5f, true),
-      Arguments.of(new Card(CardType.DEBIT, new Date(), getAccounts().get(5), "1234"), 100.0f, Currency.USD, 0.0f, "1234", 2928.0f, true)
+      Arguments.of(new Card(CardType.DEBIT, getAccounts().get(0), "1212"), 100.0f, Currency.EUR, 200.0f, "1212", 700.0f, true),
+      Arguments.of(new Card(CardType.DEBIT, getAccounts().get(0), "1212"), 100.0f, Currency.EUR, 50.0f, "1212", 800.0f, false),
+      Arguments.of(new Card(CardType.CREDIT, getAccounts().get(4), "1234"), 100.0f, Currency.GBP, 1000.0f, "1212", 2000.0f, false),
+      Arguments.of(new Card(CardType.DEBIT, getAccounts().get(6), "1331"), 150.0f, Currency.GBP, 500.0f, "1331", 2812.5f, true),
+      Arguments.of(new Card(CardType.DEBIT, getAccounts().get(6), "1331"), 150.0f, Currency.GBP, 100.0f, "1331", 3000.0f, false),
+      Arguments.of(new Card(CardType.CREDIT, getAccounts().get(7), "0000"), 0.0f, Currency.EUR, 1000.0f, "1212", 5000.0f, false),
+      Arguments.of(new Card(CardType.DEBIT, getAccounts().get(1), "1212"), 100.0f, Currency.USD, 500.0f, "1212", 0.0f, false),
+      Arguments.of(new Card(CardType.DEBIT, getAccounts().get(5), "1234"), 100.0f, Currency.USD, 400.0f, "1234", 2928.0f, true),
+      Arguments.of(new Card(CardType.DEBIT, getAccounts().get(5), "1234"), 100.0f, Currency.USD, 50.0f, "1234", 3000.0f, false),
+      Arguments.of(new Card(CardType.CREDIT, getAccounts().get(0), "1212"), 100.0f, Currency.EUR, 0.0f, "1212", 700.0f, true),
+      Arguments.of(new Card(CardType.DEBIT, getAccounts().get(6), "1331"), 150.0f, Currency.GBP, 0.0f, "1331", 2812.5f, true),
+      Arguments.of(new Card(CardType.DEBIT, getAccounts().get(5), "1234"), 100.0f, Currency.USD, 0.0f, "1234", 2928.0f, true)
     );
   }
 
