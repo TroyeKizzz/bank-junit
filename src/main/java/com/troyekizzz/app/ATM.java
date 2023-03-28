@@ -86,6 +86,8 @@ public class ATM {
       throw new IllegalStateException("Invalid pin");
     if (balance < amount)
       throw new IllegalStateException("Not enough money in the ATM");
+    if (amount <= 0)
+      throw new IllegalStateException("Amount cannot be negative or zero");
     card.getAccount().withdraw(amount, currency);
     balance -= amount;
     Transaction transaction = new Transaction(card, amount, currency, "Cash withdrawal from ATM at " + location);
@@ -108,6 +110,8 @@ public class ATM {
       throw new IllegalStateException("ATM is deactivated");
     if (!card.validatePin(pin))
       throw new IllegalStateException("Invalid pin");
+    if (amount <= 0)
+      throw new IllegalStateException("Amount cannot be negative or zero");
     card.getAccount().deposit(amount, currency);
     balance += amount;
     Transaction transaction = new Transaction(card, amount, currency, "Cash deposit to ATM at " + location);

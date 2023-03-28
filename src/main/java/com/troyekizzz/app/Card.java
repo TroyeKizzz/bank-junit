@@ -104,7 +104,7 @@ public class Card {
       customer.getBankAccounts().get(0), 
       Exchange.getInstance().convert(currency, this.account.getCurrency(), amount)
     );
-    transaction.setDescription("Purchase of goods from " + customer.getFirstName());
+    transaction.setDescription("Purchase of goods from " + customer.getFirstName() + " " + customer.getLastName() + " in amount of " + amount + " " + currency.toString());
     this.history.add(transaction);
     return transaction;
   }

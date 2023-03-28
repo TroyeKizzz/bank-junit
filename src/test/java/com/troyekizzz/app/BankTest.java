@@ -120,11 +120,13 @@ public class BankTest {
       ATM atm = bank.addAtm(location, balance);
       assertAll("Test",
         () -> assertEquals(0, bank.getAtms().indexOf(atm)),
+        () -> assertEquals(expectedBalance, bank.getCapital()),
         () -> assertDoesNotThrow(() -> {
           bank.removeAtm(atm);
         }),
         () -> assertEquals(-1, bank.getAtms().indexOf(atm)),
-        () -> assertEquals(0, bank.getAtms().size())
+        () -> assertEquals(0, bank.getAtms().size()),
+        () -> assertEquals(capital, bank.getCapital())
       );
     } else {
       assertThrows(IllegalArgumentException.class, () -> bank.addAtm(location, balance));
