@@ -119,7 +119,7 @@ public class ATMTest {
     }
   }
 
-  @ParameterizedTest
+  @ParameterizedTest(name = "Test ATM check balance: {0}")
   @MethodSource("getCheckBalanceValues")
   public void testCheckBalance(float amount, Currency currency, String correctPin, String testPin, String message, boolean expected) {
     Bank bank = new Bank("Test Bank", 100000);

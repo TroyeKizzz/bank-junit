@@ -25,7 +25,10 @@ public class Appointment {
     this.isCancelled = false;
   }
 
-  public void cancel() {
+  public void cancel() throws IllegalStateException {
+    if (this.isCancelled) {
+      throw new IllegalStateException("The appointment is already cancelled.");
+    }
     this.isCancelled = true;
   }
 
@@ -34,8 +37,8 @@ public class Appointment {
   }
 
   public String toString() {
-    return "Appointment [customer=" + customer + ", startDate=" + startDate + ", endDate=" + endDate + ", bankBranch="
-        + bankBranch + ", isCancelled=" + isCancelled + "]";
+    return "Appointment [startDate=" + startDate + ", endDate=" + endDate + ", bankBranch="
+        + bankBranch.getLocation() + ", isCancelled=" + isCancelled + "]";
   }
 
   public float getAppointmentCost() {
