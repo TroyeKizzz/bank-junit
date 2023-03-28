@@ -41,6 +41,11 @@ public class Bank {
   private List<ATM> atms = new ArrayList<>();
 
   /**
+   * The bank branches.
+   */
+  private List<BankBranch> branches = new ArrayList<>();
+
+  /**
    * The bank capital. The total amount of money that the bank has.
    */
   private float capital = 0;
@@ -122,6 +127,17 @@ public class Bank {
     ATM atm = new ATM(this, location, balance);
     atms.add(atm);
     return atm;
+  }
+
+  public BankBranch addBranch(String location, float balance) throws IllegalArgumentException {
+    try {
+      this.removeCapital(balance);
+    } catch (IllegalArgumentException e) {
+      throw e;
+    }
+    BankBranch branch = new BankBranch(this, location, balance);
+    branches.add(branch);
+    return branch;
   }
 
   /**
